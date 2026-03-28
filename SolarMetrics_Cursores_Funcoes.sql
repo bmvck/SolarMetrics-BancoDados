@@ -1,5 +1,6 @@
 -- Projeto:       SolarMetrics 2.0
 -- Sprint:        2 - Tópico 5 - Função com Cursor e JOINs
+-- Pré-requisitos: 01_DDL.sql, 02_Dados.sql
 -- Função:        FN_RELATORIO_SISTEMAS_SENSORES
 --
 -- Descrição:

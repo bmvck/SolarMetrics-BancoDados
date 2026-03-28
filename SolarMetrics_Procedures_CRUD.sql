@@ -1,6 +1,8 @@
 -- ===============================================================
 -- Projeto:       SolarMetrics 2.0
 -- Sprint:        2 - Procedures CRUD com Validação
+-- Pré-requisitos: 01_DDL.sql, 02_Dados.sql, 04_Functions.sql
+-- Objetos Sprint 3: 05_Procedures.sql (não confundir com esta entrega)
 -- Procedure:     PROC_INSERT_SISTEMA
 -- Tabela:        SM_SISTEMA
 
