@@ -49,7 +49,7 @@ Execute após `01`, `02` e `04` (a função de potência vem de `04_Functions.sq
 
 ## Documentação e entrega
 
-- Pasta [`step-by-step/`](step-by-step/) — checklist do PDF, instruções **Oracle SQL Developer Data Modeler** (MLR/MF).
+
 - **PDF** da disciplina: capa com nomes (alfabética) e RMs; link do repositório e do vídeo.
 - **Vídeo:** seguir `07_Execucoes_Teste.sql` (áudio + resolução conforme critérios do challenge).
 
