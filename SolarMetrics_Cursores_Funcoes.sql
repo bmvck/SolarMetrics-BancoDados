@@ -1,34 +1,17 @@
 -- Projeto:       SolarMetrics 2.0
--- Sprint:        2 - Tópico 5 - Função com Cursor e JOINs
--- Pré-requisitos: 01_DDL.sql, 02_Dados.sql
--- Função:        FN_RELATORIO_SISTEMAS_SENSORES
+-- Sprint:        2 - Funções pipelined (TABLE) com JOINs
+-- Pré-requisitos: 01_DDL.sql, 02_Dados.sql, 03_Types_se_necessario.sql
 --
 -- Descrição:
---   Função PL/SQL que retorna um relatório do tipo tabela (TABLE)
---   com a relação entre sistemas e sensores. A função utiliza um
---   cursor interno e realiza JOIN entre SM_SISTEMA e SM_SENSOR,
---   retornando as informações em formato tabular.
-
-
-CREATE OR REPLACE TYPE T_RELATORIO_SISTEMA_SENSOR AS OBJECT (
-    ID_SISTEMA        VARCHAR2(36),
-    NOME_INSTALACAO   VARCHAR2(200),
-    POTENCIA_TOTAL    NUMBER,
-    ID_SENSOR         VARCHAR2(36),
-    TIPO              VARCHAR2(50),
-    STATUS            VARCHAR2(50)
-);
-/
-
-CREATE OR REPLACE TYPE T_TABELA_RELATORIO_SISTEMA_SENSOR AS TABLE OF T_RELATORIO_SISTEMA_SENSOR;
-/
+--   Relatórios tabulares via PIPELINED. Os tipos OBJECT / TABLE estão em
+--   03_Types_se_necessario.sql.
 
 CREATE OR REPLACE FUNCTION FN_RELATORIO_SISTEMAS_SENSORES
 RETURN T_TABELA_RELATORIO_SISTEMA_SENSOR PIPELINED
 IS
 BEGIN
     FOR reg IN (
-        SELECT 
+        SELECT
             s.ID_SISTEMA,
             s.NOME_INSTALACAO,
             s.POTENCIA_TOTAL,
@@ -58,41 +41,17 @@ END;
 SELECT * FROM TABLE(FN_RELATORIO_SISTEMAS_SENSORES);
 
 
-
 -- ===============================================================
--- Tópico 6 - Função com Regra de Negócio
--- Função:        FN_RELATORIO_SENSORES_POR_SISTEMA
-
--- Descrição:
---   Função PL/SQL que retorna um relatório detalhado com a 
---   contagem de sensores ATIVOS e INATIVOS por sistema, bem como 
---   a potência total de cada um.
---
--- Regras de Negócio:
---   - Um sistema pode ter vários sensores.
---   - A função realiza agregações (COUNT e SUM) e JOIN entre 
---     SM_SISTEMA e SM_SENSOR.
---   - O resultado é retornado no formato TABLE .
-
-
-CREATE OR REPLACE TYPE T_RELATORIO_SENSORES AS OBJECT (
-    ID_SISTEMA        VARCHAR2(36),
-    NOME_INSTALACAO   VARCHAR2(200),
-    QTD_ATIVOS        NUMBER,
-    QTD_INATIVOS      NUMBER,
-    POTENCIA_TOTAL    NUMBER
-);
-/
-
-CREATE OR REPLACE TYPE T_TABELA_RELATORIO_SENSORES AS TABLE OF T_RELATORIO_SENSORES;
-/
+-- Tópico 6 - Função com regra de negócio
+-- Função: FN_RELATORIO_SENSORES_POR_SISTEMA
+-- ===============================================================
 
 CREATE OR REPLACE FUNCTION FN_RELATORIO_SENSORES_POR_SISTEMA
 RETURN T_TABELA_RELATORIO_SENSORES PIPELINED
 IS
 BEGIN
     FOR reg IN (
-        SELECT 
+        SELECT
             s.ID_SISTEMA,
             s.NOME_INSTALACAO,
             SUM(CASE WHEN se.STATUS = 'ATIVO' THEN 1 ELSE 0 END) AS QTD_ATIVOS,
@@ -117,5 +76,5 @@ BEGIN
     RETURN;
 END;
 /
-SELECT * FROM TABLE(FN_RELATORIO_SENSORES_POR_SISTEMA);
 
+SELECT * FROM TABLE(FN_RELATORIO_SENSORES_POR_SISTEMA);
